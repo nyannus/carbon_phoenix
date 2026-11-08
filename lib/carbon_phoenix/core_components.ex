@@ -1,19 +1,20 @@
-defmodule CarbonPhoenix.Components do
+defmodule CarbonPhoenix.CoreComponents do
   @moduledoc """
   Provides core UI components, built on the
   [Carbon Design System web components](https://web-components.carbondesignsystem.com/).
 
   The components in this module keep the usual Phoenix API (`flash/1`,
   `button/1`, `input/1`, `header/1`, `table/1`, `list/1`, `icon/1`) but render
-  `cds-*` custom elements. They expose the most relevant Carbon options as
+  Carbon elements. They expose the most relevant Carbon options as
   regular assigns.
 
   Every one of them also accepts a `carbon` map. Its entries are rendered as
   extra attributes on the underlying Carbon element, which makes every
-  attribute from the storybook reachable, e.g. `carbon={%{"helper-text" => "Hi"}}`.
+  option from the storybook reachable, e.g. `carbon={%{helper_text: "Hi"}}`
+  (underscores in keys become the dashes of the web component attribute).
 
   For a one-to-one wrapper of *every* Carbon web component and *every*
-  attribute, see `CarbonPhoenix.WebComponents` (`<.cds_tile>`, `<.cds_modal>`, ...).
+  attribute, see `CarbonPhoenix.WebComponents` (`<Carbon.tile>`, `<Carbon.modal>`, ...).
 
   References:
 
@@ -43,7 +44,7 @@ defmodule CarbonPhoenix.Components do
   Renders flash notices as Carbon toast notifications.
 
   Place flashes inside a positioned container, see
-  `your layout`s flash group`.
+  `your layout's flash group component`.
 
   ## Examples
 
@@ -69,7 +70,7 @@ defmodule CarbonPhoenix.Components do
 
   attr :carbon, :map,
     default: %{},
-    doc: "additional attributes for the `cds-toast-notification` element"
+    doc: "extra Carbon toast notification options as a map, e.g. `%{option_name: value}`"
 
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
 
@@ -95,7 +96,7 @@ defmodule CarbonPhoenix.Components do
         timeout={@timeout}
         low-contrast={@low_contrast}
         hide-close-button={@hide_close_button}
-        {@carbon}
+        {carbon(@carbon)}
       >
       </cds-toast-notification>
     </div>
@@ -146,7 +147,10 @@ defmodule CarbonPhoenix.Components do
     default: nil,
     doc: "screen reader text for the danger kinds"
 
-  attr :carbon, :map, default: %{}, doc: "additional attributes for the `cds-button` element"
+  attr :carbon, :map,
+    default: %{},
+    doc: "extra Carbon button options as a map, e.g. `%{option_name: value}`"
+
   attr :class, :any, default: nil
   slot :inner_block, required: true
 
@@ -167,7 +171,7 @@ defmodule CarbonPhoenix.Components do
       tooltip-alignment={@tooltip_alignment}
       danger-description={@danger_description}
       class={@class}
-      {@carbon}
+      {carbon(@carbon)}
       {@link}
       {@rest}
     >
@@ -218,26 +222,26 @@ defmodule CarbonPhoenix.Components do
 
   | type | Carbon element |
   | --- | --- |
-  | `text`, `email`, `tel`, `url`, `color`, `month`, `week`, `datetime-local` | `cds-text-input` |
-  | `password` | `cds-password-input` |
-  | `number` | `cds-number-input` |
-  | `search` | `cds-search` |
-  | `textarea` | `cds-textarea` |
-  | `select` | `cds-select` (`cds-multi-select` with `multiple`) |
-  | `dropdown`, `combo-box`, `multi-select` | `cds-dropdown`, `cds-combo-box`, `cds-multi-select` |
-  | `radio-group` | `cds-radio-button-group` |
-  | `checkbox` | `cds-checkbox`, used exclusively for boolean values |
-  | `toggle` | `cds-toggle`, boolean value |
-  | `range` | `cds-slider` |
-  | `date` | `cds-date-picker` |
-  | `time` | `cds-time-picker` |
-  | `file` | `cds-file-uploader` |
+  | `text`, `email`, `tel`, `url`, `color`, `month`, `week`, `datetime-local` | Text input |
+  | `password` | Password input |
+  | `number` | Number input |
+  | `search` | Search |
+  | `textarea` | Text area |
+  | `select` | Select (multi select with `multiple`) |
+  | `dropdown`, `combo-box`, `multi-select` | Dropdown, combo box, multi select |
+  | `radio-group` | Radio button group |
+  | `checkbox` | Checkbox, used exclusively for boolean values |
+  | `toggle` | Toggle, boolean value |
+  | `range` | Slider |
+  | `date` | Date picker |
+  | `time` | Time picker |
+  | `file` | File uploader |
   | `hidden` | plain `<input type="hidden">` |
 
   For live file uploads, see `Phoenix.Component.live_file_input/1`.
 
   Options that are not available as assigns can be passed through the
-  `carbon` map, which is rendered as attributes on the Carbon element.
+  `carbon` map, e.g. `carbon={%{enable_counter: true, max_count: 100}}`.
 
   ## Examples
 
@@ -290,7 +294,7 @@ defmodule CarbonPhoenix.Components do
 
   attr :carbon, :map,
     default: %{},
-    doc: "additional attributes for the Carbon element, e.g. `%{\"enable-counter\" => true}`"
+    doc: "extra options of the Carbon input, e.g. `%{enable_counter: true}`"
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
@@ -337,7 +341,7 @@ defmodule CarbonPhoenix.Components do
         checked={@checked}
         label-text={@label}
         {common(assigns)}
-        {@carbon}
+        {carbon(@carbon)}
         {@rest}
       >
       </cds-checkbox>
@@ -349,7 +353,7 @@ defmodule CarbonPhoenix.Components do
         toggled={@checked}
         label-text={@label}
         {common(assigns)}
-        {@carbon}
+        {carbon(@carbon)}
         {@rest}
       >
       </cds-toggle>
@@ -395,7 +399,7 @@ defmodule CarbonPhoenix.Components do
         value={List.first(@selected)}
         legend-text={@label}
         {common(assigns)}
-        {@carbon}
+        {carbon(@carbon)}
         {@rest}
       >
         <cds-radio-button
@@ -418,7 +422,7 @@ defmodule CarbonPhoenix.Components do
         label={@label}
         value={Phoenix.HTML.Form.normalize_value("textarea", @value)}
         {common(assigns)}
-        {@carbon}
+        {carbon(@carbon)}
         {@rest}
       >
       </cds-textarea>
@@ -435,7 +439,7 @@ defmodule CarbonPhoenix.Components do
         value={@value}
         label-text={@label}
         {common(assigns)}
-        {@carbon}
+        {carbon(@carbon)}
         {@rest}
       >
       </cds-slider>
@@ -446,7 +450,7 @@ defmodule CarbonPhoenix.Components do
   def input(%{type: "date"} = assigns) do
     ~H"""
     <div style={field_style()}>
-      <cds-date-picker date-format="Y-m-d" value={@value} {@carbon}>
+      <cds-date-picker date-format="Y-m-d" value={@value} {carbon(@carbon)}>
         <cds-date-picker-input
           id={@id}
           name={@name}
@@ -471,7 +475,7 @@ defmodule CarbonPhoenix.Components do
         value={Phoenix.HTML.Form.normalize_value("time", @value)}
         label-text={@label}
         {common(assigns)}
-        {@carbon}
+        {carbon(@carbon)}
         {@rest}
       >
       </cds-time-picker>
@@ -482,7 +486,7 @@ defmodule CarbonPhoenix.Components do
   def input(%{type: "file"} = assigns) do
     ~H"""
     <div style={field_style()}>
-      <cds-file-uploader label-title={@label} label-description={@helper_text} {@carbon}>
+      <cds-file-uploader label-title={@label} label-description={@helper_text} {carbon(@carbon)}>
         <cds-file-uploader-button
           id={@id}
           name={@name}
@@ -514,7 +518,7 @@ defmodule CarbonPhoenix.Components do
         },
         Map.merge(label_attr(tag, assigns.label), common(assigns))
       )
-      |> Map.merge(assigns.carbon)
+      |> Map.merge(carbon(assigns.carbon))
       |> Map.merge(assigns.rest)
 
     assigns = assign(assigns, tag: tag, attrs: attrs)
@@ -527,6 +531,13 @@ defmodule CarbonPhoenix.Components do
   end
 
   defp field_style, do: @field_style
+
+  # `%{helper_text: "x"}` -> `%{"helper-text" => "x"}`
+  defp carbon(options) do
+    Map.new(options, fn {key, value} ->
+      {key |> to_string() |> String.replace("_", "-"), value}
+    end)
+  end
 
   defp select_attrs(assigns) do
     tag = assigns.tag
@@ -541,7 +552,7 @@ defmodule CarbonPhoenix.Components do
     }
     |> Map.merge(label_attr(tag, assigns.label))
     |> Map.merge(common(assigns))
-    |> Map.merge(assigns.carbon)
+    |> Map.merge(carbon(assigns.carbon))
     |> Map.merge(assigns.rest)
   end
 
@@ -638,7 +649,10 @@ defmodule CarbonPhoenix.Components do
   @doc """
   Renders a header with title.
   """
-  attr :carbon, :map, default: %{}, doc: "additional attributes for the `cds-heading` element"
+  attr :carbon, :map,
+    default: %{},
+    doc: "extra Carbon heading options as a map, e.g. `%{option_name: value}`"
+
   slot :inner_block, required: true
   slot :subtitle
   slot :actions
@@ -651,7 +665,7 @@ defmodule CarbonPhoenix.Components do
         "display: flex; align-items: center; justify-content: space-between; gap: var(--cds-spacing-06, 1.5rem);"
     ]}>
       <div>
-        <cds-heading {@carbon}>{render_slot(@inner_block)}</cds-heading>
+        <cds-heading {carbon(@carbon)}>{render_slot(@inner_block)}</cds-heading>
         <p
           :if={@subtitle != []}
           style="color: var(--cds-text-secondary, #525252); font-size: 0.875rem;"
@@ -692,7 +706,10 @@ defmodule CarbonPhoenix.Components do
   attr :sortable, :boolean, default: false, doc: "make all columns sortable"
   attr :with_header, :boolean, default: false
   attr :use_static_width, :boolean, default: false
-  attr :carbon, :map, default: %{}, doc: "additional attributes for the `cds-table` element"
+
+  attr :carbon, :map,
+    default: %{},
+    doc: "extra Carbon table options as a map, e.g. `%{option_name: value}`"
 
   slot :col, required: true do
     attr :label, :string
@@ -717,7 +734,7 @@ defmodule CarbonPhoenix.Components do
       is-sortable={@sortable}
       with-header={@with_header}
       use-static-width={@use_static_width}
-      {@carbon}
+      {carbon(@carbon)}
     >
       <cds-table-head>
         <cds-table-header-row>
@@ -768,7 +785,7 @@ defmodule CarbonPhoenix.Components do
 
   attr :carbon, :map,
     default: %{},
-    doc: "additional attributes for the `cds-structured-list` element"
+    doc: "extra Carbon structured list options as a map, e.g. `%{option_name: value}`"
 
   slot :item, required: true do
     attr :title, :string, required: true
@@ -776,7 +793,7 @@ defmodule CarbonPhoenix.Components do
 
   def list(assigns) do
     ~H"""
-    <cds-structured-list condensed={@condensed} flush={@flush} {@carbon}>
+    <cds-structured-list condensed={@condensed} flush={@flush} {carbon(@carbon)}>
       <cds-structured-list-body>
         <cds-structured-list-row :for={item <- @item}>
           <cds-structured-list-cell no-wrap>

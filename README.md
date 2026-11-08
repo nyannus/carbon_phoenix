@@ -3,12 +3,13 @@
 Phoenix LiveView function components for the
 [Carbon Design System web components](https://web-components.carbondesignsystem.com/).
 
-* `CarbonPhoenix.Components` - Phoenix-style core components (`flash`, `button`,
+* `CarbonPhoenix.CoreComponents` - Phoenix-style core components (`flash`, `button`,
   `input`, `header`, `table`, `list`, `icon`) rendered with Carbon. Every one
-  accepts a `carbon={%{...}}` map for arbitrary Carbon attributes.
+  accepts a `carbon={%{...}}` map for further Carbon options.
 * `CarbonPhoenix.WebComponents` - one generated component for **every**
-  `cds-*` element and **every** attribute in the storybook (`<.cds_modal>`,
-  `<.cds_tile>`, ...). Regenerate with `npm install && npm run generate`.
+  Carbon component and **every** option in the storybook (`<Carbon.modal>`,
+  `<Carbon.tile>`, ...), with typed and documented assigns. Regenerate with
+  `npm install && npm run generate`.
 * `CarbonPhoenix.Icons` - the Carbon icon set, read from the `@carbon/icons`
   npm package at compile time (nothing is vendored in this repo).
 * `priv/static/carbon_phoenix.js` - the `CarbonEvents` LiveView hook that
@@ -59,8 +60,8 @@ Phoenix LiveView function components for the
 5. Import the components in `my_app_web.ex` (`html_helpers`):
 
    ```elixir
-   import CarbonPhoenix.Components
-   import CarbonPhoenix.WebComponents
+   import CarbonPhoenix.CoreComponents
+   alias CarbonPhoenix.WebComponents, as: Carbon
    ```
 
 ## Usage
@@ -68,14 +69,17 @@ Phoenix LiveView function components for the
 ```heex
 <.button navigate={~p"/"} kind="tertiary" icon="home">Home</.button>
 <.input field={@form[:email]} type="email" helper_text="We never share it" />
-<.cds_modal id="m" open={@open} on={%{"cds-modal-closed" => "close"}}>
-  <.cds_modal_header><.cds_modal_heading>Hi</.cds_modal_heading></.cds_modal_header>
-</.cds_modal>
+<Carbon.modal id="m" open={@open} on_closed="close">
+  <Carbon.modal_header>
+    <Carbon.modal_heading>Hi</Carbon.modal_heading>
+  </Carbon.modal_header>
+</Carbon.modal>
 ```
 
 Only HTML attributes are supported (not JS-only properties). Named slots are
-filled with `slot="name"` on the child. DOM events are forwarded with
-`on={%{"event" => "liveview_event"}}` plus an `id`.
+filled with `slot="name"` on the child. Component events are `on_*` assigns
+holding a LiveView event name (the element needs an `id`). See the
+"Events, slots and forms" guide.
 
 ## License
 

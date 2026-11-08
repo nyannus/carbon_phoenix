@@ -1,7 +1,7 @@
 defmodule CarbonPhoenix.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
   @source_url "https://github.com/nyannus/carbon_phoenix"
 
   def project do
@@ -15,7 +15,7 @@ defmodule CarbonPhoenix.MixProject do
       description:
         "Phoenix LiveView function components for the Carbon Design System web components.",
       package: package(),
-      docs: [main: "readme", extras: ["README.md"], source_ref: "v#{@version}"],
+      docs: docs(),
       source_url: @source_url
     ]
   end
@@ -31,11 +31,26 @@ defmodule CarbonPhoenix.MixProject do
     ]
   end
 
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md", "guides/events_and_forms.md"],
+      groups_for_extras: [Guides: ~r{guides/}],
+      groups_for_modules: [
+        "Phoenix components": [CarbonPhoenix.CoreComponents],
+        "All Carbon components": [CarbonPhoenix.WebComponents],
+        Icons: [CarbonPhoenix.Icons]
+      ],
+      source_ref: "v#{@version}",
+      skip_undefined_reference_warnings_on: ["README.md"]
+    ]
+  end
+
   defp package do
     [
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => @source_url},
-      files: ~w(lib priv package.json README.md LICENSE .formatter.exs mix.exs)
+      files: ~w(lib priv guides package.json README.md LICENSE .formatter.exs mix.exs)
     ]
   end
 end

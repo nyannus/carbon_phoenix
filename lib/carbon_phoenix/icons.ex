@@ -8,7 +8,7 @@ defmodule CarbonPhoenix.Icons do
   variant is embedded.
 
   If the npm package is not installed when compiling, the lookup is empty and
-  `CarbonPhoenix.Components.icon/1` renders an empty `<svg>`.
+  `CarbonPhoenix.CoreComponents.icon/1` renders an empty `<svg>`.
   """
 
   @icons_subdir "node_modules/@carbon/icons/svg/32"

@@ -1,10 +1,10 @@
-defmodule CarbonPhoenix.ComponentsTest do
+defmodule CarbonPhoenix.CoreComponentsTest do
   use ExUnit.Case, async: true
 
   import Phoenix.Component
   import Phoenix.LiveViewTest
-  import CarbonPhoenix.Components
-  import CarbonPhoenix.WebComponents
+  import CarbonPhoenix.CoreComponents
+  alias CarbonPhoenix.WebComponents, as: Carbon
 
   defp html(rendered), do: rendered |> rendered_to_string() |> LazyHTML.from_fragment()
   defp has?(doc, selector), do: LazyHTML.query(doc, selector) |> Enum.count() > 0
@@ -78,8 +78,8 @@ defmodule CarbonPhoenix.ComponentsTest do
 
     doc =
       html(~H"""
-      <.cds_modal id="m" open size="sm" on={%{"cds-modal-closed" => "closed"}}>x</.cds_modal>
-      <.cds_tag type="red">t</.cds_tag>
+      <Carbon.modal id="m" open size="sm" on_closed="closed">x</Carbon.modal>
+      <Carbon.tag type="red">t</Carbon.tag>
       """)
 
     assert has?(doc, ~s(cds-modal#m[open][size="sm"][phx-hook="CarbonEvents"][data-carbon-on]))
