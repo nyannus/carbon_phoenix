@@ -1,0 +1,16 @@
+{
+  "name": "carbon_phoenix",
+  "version": "0.1.0",
+  "description": "LiveView glue for Carbon web components rendered by the carbon_phoenix Elixir package",
+  "main": "priv/static/carbon_phoenix.js",
+  "module": "priv/static/carbon_phoenix.js",
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "generate": "node scripts/generate.mjs"
+  },
+  "devDependencies": {
+    "@carbon/icons": "^11.92.0",
+    "@carbon/web-components": "^2.67.0"
+  }
+}
