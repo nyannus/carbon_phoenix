@@ -19,7 +19,7 @@ Phoenix LiveView function components for the
 1. Add the dependency (git or Hex):
 
    ```elixir
-   {:carbon_phoenix, github: "YOUR_USER/carbon_phoenix"}
+   {:carbon_phoenix, github: "nyannus/carbon_phoenix"}
    # or {:carbon_phoenix, "~> 0.1"}
    ```
 
